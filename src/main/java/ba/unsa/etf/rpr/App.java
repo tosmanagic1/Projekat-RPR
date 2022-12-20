@@ -4,7 +4,7 @@ package ba.unsa.etf.rpr;
  * Hello world!
  *
  */
-public class Main
+public class App
 {
     public static void main( String[] args )
     {
