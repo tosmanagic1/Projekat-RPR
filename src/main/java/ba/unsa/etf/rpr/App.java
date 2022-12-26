@@ -41,6 +41,7 @@ public class App
 
         Admins a1 = new Admins();
         Admins a2 = new Admins();
+        Admins a3 = new Admins();
 
         a1.setId(1);
         a1.setName("admin");
@@ -56,34 +57,41 @@ public class App
         a2.setUsername("kabas123");
         a2.setPassword("SLOMIGA");
         dao1.add(a2);
+        a3.setId(3);
+        a3.setName("adminkec");
+        a3.setNumber(222333);
+        a3.setFootballPitch(f1);
+        a3.setUsername("kabas123456");
+        a3.setPassword("SLOMIGAKONIKOG");
+        dao1.add(a3);
 
-        admins = dao1.getAll();
+        admins = dao1.searchByFootballPitch(f1);
 
-        Admins a3 = dao1.getById(2);
-        //System.out.println(admins);
+        //Admins a3 = dao1.getById(2);
+        System.out.println(admins);
         //System.out.println(a3);
 
         //dao1.delete(2);
 
-        List<Admins> admins1 = dao1.getAll();
+        //List<Admins> admins1 = dao1.getAll();
         //System.out.println(admins1);
 
-        Admins a4 = new Admins();
+        /*Admins a4 = new Admins();
         a4.setId(1);
         a4.setName("admin1");
         a4.setNumber(798008);
         a4.setFootballPitch(f1);
         a4.setUsername("solzencki");
-        a4.setPassword("SILOM");
+        a4.setPassword("SILOM");*/
 
-        Admins a5 = dao1.update(a4);
+        //Admins a5 = dao1.update(a4);
 
-        List admins2 = dao1.getAll();
+        //List admins2 = dao1.getAll();
         //System.out.println(admins2);
 
         //Users test
 
-        UsersDao dao2 = new UsersDaoSQLImpl();
+        /*UsersDao dao2 = new UsersDaoSQLImpl();
         List<Users> users;
 
         Users u1 = new Users();
@@ -125,12 +133,12 @@ public class App
 
         Users u5 = dao2.update(u4);
 
-        List users2 = dao2.getAll();
+        List users2 = dao2.getAll();*/
         //System.out.println(users2);
 
         //Appointments test
 
-        AppointmentsDao dao3 = new AppointmentsDaoSQLImpl();
+        /*AppointmentsDao dao3 = new AppointmentsDaoSQLImpl();
         List<Appointments> appointments;
 
         Appointments ap1 = new Appointments();
@@ -173,6 +181,6 @@ public class App
         Appointments ap5 = dao3.update(ap4);
 
         List appointments2 = dao3.getAll();
-        System.out.println(appointments2);
+        System.out.println(appointments2);*/
     }
 }

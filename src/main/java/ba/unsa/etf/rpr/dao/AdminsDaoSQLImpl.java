@@ -145,4 +145,29 @@ public class AdminsDaoSQLImpl implements AdminsDao {
         }
         return admins;
     }
+
+    @Override
+    public List<Admins> searchByFootballPitch (FootballPitches fp) {
+        String query = "SELECT * FROM Admins WHERE idFootballPitch = ?";
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setInt(1, fp.getId());
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<Admins> adminsLista = new ArrayList<>();
+            while(rs.next()) {
+                Admins a = new Admins();
+                a.setId(rs.getInt("id"));
+                a.setName(rs.getString("name"));
+                a.setNumber(rs.getInt("number"));
+                a.setFootballPitch(new FootballPitchesDaoSQLImpl().getById(rs.getInt("idFootballPitch")));
+                a.setUsername(rs.getString("username"));
+                a.setPassword(rs.getString("password"));
+                adminsLista.add(a);
+            }
+            return adminsLista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
