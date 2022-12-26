@@ -1,6 +1,5 @@
 package ba.unsa.etf.rpr.dao;
 
-import ba.unsa.etf.rpr.App;
 import ba.unsa.etf.rpr.domain.Admins;
 import ba.unsa.etf.rpr.domain.Appointments;
 import ba.unsa.etf.rpr.domain.Users;
@@ -123,7 +122,7 @@ public class AppointmentsDaoSQLImpl implements AppointmentsDao{
     @Override
     public List<Appointments> getAll() {
         String query = "SELECT * FROM Appointments";
-        List<Appointments> appointments = new ArrayList<Appointments>();
+        List<Appointments> appointments = new ArrayList<>();
         try{
             PreparedStatement stmt = this.connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
@@ -142,4 +141,53 @@ public class AppointmentsDaoSQLImpl implements AppointmentsDao{
         }
         return appointments;
     }
+
+    @Override
+    public List<Appointments> searchByAdmin (Admins a) {
+        String query = "SELECT * FROM Appointments WHERE idAdmin = ?";
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setInt(1, a.getId());
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<Appointments> appointmentsList = new ArrayList<>();
+            while(rs.next()) {
+                Appointments ap = new Appointments();
+                ap.setId(rs.getInt("id"));
+                ap.setCreated(rs.getDate("date"));
+                ap.setTypeOfPitch(rs.getString("typeOfPitch"));
+                ap.setAdmin(new AdminsDaoSQLImpl().getById(rs.getInt("idAdmin")));
+                ap.setUser(new UsersDaoSQLImpl().getById(rs.getInt("idUser")));
+                appointmentsList.add(ap);
+            }
+            return appointmentsList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Appointments> searchByUser (Users u) {
+        String query = "SELECT * FROM Appointments WHERE idUser = ?";
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(query);
+            stmt.setInt(1, u.getId());
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<Appointments> appointmentsList = new ArrayList<>();
+            while(rs.next()) {
+                Appointments a = new Appointments();
+                a.setId(rs.getInt("id"));
+                a.setCreated(rs.getDate("date"));
+                a.setTypeOfPitch(rs.getString("typeOfPitch"));
+                a.setAdmin(new AdminsDaoSQLImpl().getById(rs.getInt("idAdmin")));
+                a.setUser(new UsersDaoSQLImpl().getById(rs.getInt("idUser")));
+                appointmentsList.add(a);
+            }
+            return appointmentsList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

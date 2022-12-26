@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface AdminsDao extends Dao<Admins> {
 
-    public List<Admins> searchByFootballPitch (FootballPitches fp);
+    List<Admins> searchByFootballPitch (FootballPitches fp);
 }

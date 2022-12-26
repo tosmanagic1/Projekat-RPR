@@ -5,10 +5,10 @@ import ba.unsa.etf.rpr.domain.Admins;
 import ba.unsa.etf.rpr.domain.Appointments;
 import ba.unsa.etf.rpr.domain.FootballPitches;
 import ba.unsa.etf.rpr.domain.Users;
-import com.google.protobuf.DescriptorProtos;
+
 
 import java.sql.Date;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -65,33 +65,9 @@ public class App
         a3.setPassword("SLOMIGAKONIKOG");
         dao1.add(a3);
 
-        admins = dao1.searchByFootballPitch(f1);
-
-        //Admins a3 = dao1.getById(2);
-        System.out.println(admins);
-        //System.out.println(a3);
-
-        //dao1.delete(2);
-
-        //List<Admins> admins1 = dao1.getAll();
-        //System.out.println(admins1);
-
-        /*Admins a4 = new Admins();
-        a4.setId(1);
-        a4.setName("admin1");
-        a4.setNumber(798008);
-        a4.setFootballPitch(f1);
-        a4.setUsername("solzencki");
-        a4.setPassword("SILOM");*/
-
-        //Admins a5 = dao1.update(a4);
-
-        //List admins2 = dao1.getAll();
-        //System.out.println(admins2);
-
         //Users test
 
-        /*UsersDao dao2 = new UsersDaoSQLImpl();
+        UsersDao dao2 = new UsersDaoSQLImpl();
         List<Users> users;
 
         Users u1 = new Users();
@@ -114,35 +90,15 @@ public class App
 
         users = dao2.getAll();
 
-        Users u3 = dao2.getById(2);
-        //System.out.println(users);
-        //System.out.println(u3);
-
-        //dao2.delete(2);
-
-        List<Users> users1 = dao2.getAll();
-        //System.out.println(users1);
-
-        Users u4 = new Users();
-        u4.setId(1);
-        u4.setName("user1");
-        u4.setNumber(798008);
-        u4.setEmail("radosnakloaka@gmail.com");
-        u4.setUsername("solzencki");
-        u4.setPassword("SILOM");
-
-        Users u5 = dao2.update(u4);
-
-        List users2 = dao2.getAll();*/
-        //System.out.println(users2);
 
         //Appointments test
 
-        /*AppointmentsDao dao3 = new AppointmentsDaoSQLImpl();
-        List<Appointments> appointments;
+        AppointmentsDao dao3 = new AppointmentsDaoSQLImpl();
+        List<Appointments> appointments, appointments1;
 
         Appointments ap1 = new Appointments();
         Appointments ap2 = new Appointments();
+        Appointments ap3 = new Appointments();
         Date date = new Date(System.currentTimeMillis());
 
         ap1.setId(1);
@@ -159,28 +115,19 @@ public class App
         ap2.setTypeOfPitch("Plastic grass");
         dao3.add(ap2);
 
-        appointments = dao3.getAll();
+        ap3.setId(3);
+        ap3.setAdmin(a2);
+        ap3.setUser(u2);
+        ap3.setCreated(date);
+        ap3.setTypeOfPitch("Natural grass");
+        dao3.add(ap3);
 
-        Appointments ap3 = dao3.getById(2);
+        appointments = dao3.searchByUser(u2);
+        appointments1 = dao3.searchByAdmin(a2);
         System.out.println(appointments);
-        System.out.println(ap3);
-
-        dao3.delete(2);
-
-        List<Appointments> appointments1 = dao3.getAll();
         System.out.println(appointments1);
 
-        Appointments ap4 = new Appointments();
-        ap4.setId(1);
-        ap4.setAdmin(a2);
-        ap4.setUser(u2);
-        ap4.setCreated(date);
-        ap4.setTypeOfPitch("Natural grass");
-        dao3.add(ap4);
 
-        Appointments ap5 = dao3.update(ap4);
 
-        List appointments2 = dao3.getAll();
-        System.out.println(appointments2);*/
     }
 }
