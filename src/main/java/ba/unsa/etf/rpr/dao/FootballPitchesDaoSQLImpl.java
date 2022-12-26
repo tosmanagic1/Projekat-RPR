@@ -2,17 +2,24 @@ package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.domain.FootballPitches;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-public class FootballPitchesDaoImpl implements FootballPitchesDao {
+public class FootballPitchesDaoSQLImpl implements FootballPitchesDao {
 
     private Connection connection;
 
-    public  FootballPitchesDaoImpl () {
-        try {
-            this.connection = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7583497", "sql7583497", "5YtG69q1pp");
+    public FootballPitchesDaoSQLImpl() {
+        try{
+            Properties p = new Properties();
+            InputStream is = new FileInputStream("conf/database.properties");
+            p.load(is);
+
+            this.connection = DriverManager.getConnection(p.getProperty("db.url"), p.getProperty("db.username"), p.getProperty("db.password"));
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,19 +48,37 @@ public class FootballPitchesDaoImpl implements FootballPitchesDao {
         return null;
     }
 
+    private int getMaxId(){
+        int id=1;
+        try {
+            PreparedStatement statement = this.connection.prepareStatement("SELECT MAX(id) FROM FootballPitches");
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                id = rs.getInt(1) + 1;
+                rs.close();
+                return id;
+            }
+        } catch (SQLException e) {
+            System.out.println("Problem pri radu sa bazom podataka");
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
+
     @Override
     public FootballPitches add (FootballPitches item) {
-        String insert = "INSERT INTO FootballPitches VALUES(id, name, address)";
+        String insert = "INSERT INTO FootballPitches (id, name, address)" + " VALUES (?, ?, ?)";
+        int id = getMaxId();
         try{
-            PreparedStatement stmt = this.connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stmt = this.connection.prepareStatement(insert);
 
-            ResultSet rs = stmt.getGeneratedKeys();
-            rs.next(); // we know that there is one key
-            item.setId(rs.getInt(1)); //set id to return it back
+            item.setId(id);
 
-            stmt.setString(1, item.getName());
+            stmt.setInt(1,item.getId());
 
-            stmt.setString(1, item.getAddress());
+            stmt.setString(2, item.getName());
+
+            stmt.setString(3, item.getAddress());
             stmt.executeUpdate();
 
             return item;
@@ -68,9 +93,10 @@ public class FootballPitchesDaoImpl implements FootballPitchesDao {
         String insert = "UPDATE FootballPitches SET name = ?, address = ? WHERE id = ?";
         try{
             PreparedStatement stmt = this.connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
-            stmt.setObject(1, item.getId());
-            stmt.setObject(2, item.getName());
-            stmt.setObject(3, item.getAddress());
+            stmt.setObject(1, item.getName());
+            stmt.setObject(2, item.getAddress());
+            stmt.setObject(3, item.getId());
+
             stmt.executeUpdate();
             return item;
         }catch (SQLException e){
