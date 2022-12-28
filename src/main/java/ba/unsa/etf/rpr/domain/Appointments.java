@@ -3,7 +3,7 @@ package ba.unsa.etf.rpr.domain;
 import java.sql.Date;
 import java.util.Objects;
 
-public class Appointments {
+public class Appointments implements Idable {
 
     private int id;
     private Date created;
